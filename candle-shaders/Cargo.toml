@@ -10,6 +10,9 @@ categories = ["science"]
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-inline-spirv = "0.1.6"
+bytemuck = { workspace = true }
 
 [build-dependencies]
+shaderc = "0.8.2"
+glob = "0.3.1"
+rayon = "1.7.0"
