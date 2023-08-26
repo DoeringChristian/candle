@@ -12,6 +12,7 @@ impl Tensor {
         let prefix = match self.device() {
             crate::Device::Cpu => "Cpu",
             crate::Device::Cuda(_) => "Cuda",
+            crate::Device::Wgpu(_) => "Wgpu",
         };
         write!(f, "{prefix}Tensor[")?;
         match self.dims() {

@@ -484,6 +484,7 @@ impl Tensor {
         match &*self.storage() {
             Storage::Cpu(cpu_storage) => from_cpu_storage(cpu_storage),
             Storage::Cuda(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
+            Storage::Wgpu(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
         }
     }
 
@@ -1129,6 +1130,7 @@ impl Tensor {
         match &*self.storage() {
             Storage::Cpu(storage) => from_cpu_storage(storage),
             Storage::Cuda(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
+            Storage::Wgpu(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
         }
     }
 
@@ -1159,6 +1161,7 @@ impl Tensor {
         match &*self.storage() {
             Storage::Cpu(storage) => from_cpu_storage(storage),
             Storage::Cuda(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
+            Storage::Wgpu(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
         }
     }
 
@@ -1199,6 +1202,7 @@ impl Tensor {
         match &*self.storage() {
             Storage::Cpu(storage) => from_cpu_storage(storage),
             Storage::Cuda(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
+            Storage::Wgpu(storage) => from_cpu_storage(&storage.to_cpu_storage()?),
         }
     }
 
@@ -1493,6 +1497,11 @@ impl Tensor {
                     Storage::Cuda(cuda.storage_from_cpu_storage(&cpu_storage)?)
                 }
                 (Storage::Cpu(storage), Device::Cpu) => Storage::Cpu(storage.clone()),
+                (Storage::Cpu(_), Device::Wgpu(_)) => todo!(),
+                (Storage::Cuda(_), Device::Wgpu(_)) => todo!(),
+                (Storage::Wgpu(_), Device::Cpu) => todo!(),
+                (Storage::Wgpu(_), Device::Cuda(_)) => todo!(),
+                (Storage::Wgpu(_), Device::Wgpu(_)) => todo!(),
             };
             let op = BackpropOp::new1(self, Op::ToDevice);
             let tensor_ = Tensor_ {

@@ -14,6 +14,7 @@ pub enum DeviceLocation {
 pub enum Device {
     Cpu,
     Cuda(crate::CudaDevice),
+    Wgpu(crate::WgpuDevice),
 }
 
 // TODO: Should we back the cpu implementation using the NdArray crate or similar?
@@ -85,6 +86,9 @@ impl Device {
     pub fn new_cuda(ordinal: usize) -> Result<Self> {
         Ok(Self::Cuda(crate::CudaDevice::new(ordinal)?))
     }
+    pub fn new_wgpu(ordinal: usize) -> Result<Self> {
+        Ok(Self::Wgpu(crate::WgpuDevice::new(ordinal)?))
+    }
 
     pub fn same_device(&self, rhs: &Self) -> bool {
         match (self, rhs) {
@@ -98,6 +102,7 @@ impl Device {
         match self {
             Self::Cpu => DeviceLocation::Cpu,
             Self::Cuda(device) => device.location(),
+            Self::Wgpu(device) => device.location(),
         }
     }
 
@@ -105,6 +110,7 @@ impl Device {
         match self {
             Self::Cpu => true,
             Self::Cuda(_) => false,
+            Self::Wgpu(_) => false,
         }
     }
 
@@ -112,6 +118,7 @@ impl Device {
         match self {
             Self::Cpu => false,
             Self::Cuda(_) => true,
+            Self::Wgpu(_) => false,
         }
     }
 
@@ -138,6 +145,10 @@ impl Device {
             Device::Cuda(device) => {
                 let storage = device.rand_uniform(shape, dtype, lo, up)?;
                 Ok(Storage::Cuda(storage))
+            }
+            Device::Wgpu(device) => {
+                let storage = device.rand_uniform(shape, dtype, lo, up)?;
+                Ok(Storage::Wgpu(storage))
             }
         }
     }
@@ -167,6 +178,10 @@ impl Device {
                 let storage = device.rand_normal(shape, dtype, mean, std)?;
                 Ok(Storage::Cuda(storage))
             }
+            Device::Wgpu(device) => {
+                let storage = device.rand_normal(shape, dtype, mean, std)?;
+                Ok(Storage::Wgpu(storage))
+            }
         }
     }
 
@@ -189,6 +204,10 @@ impl Device {
                 let storage = device.ones_impl(shape, dtype)?;
                 Ok(Storage::Cuda(storage))
             }
+            Device::Wgpu(device) => {
+                let storage = device.ones_impl(shape, dtype)?;
+                Ok(Storage::Wgpu(storage))
+            }
         }
     }
 
@@ -202,6 +221,10 @@ impl Device {
                 let storage = device.zeros_impl(shape, dtype)?;
                 Ok(Storage::Cuda(storage))
             }
+            Device::Wgpu(device) => {
+                let storage = device.zeros_impl(shape, dtype)?;
+                Ok(Storage::Wgpu(storage))
+            }
         }
     }
 
@@ -213,6 +236,11 @@ impl Device {
                 let storage = device.storage_from_cpu_storage(&storage)?;
                 Ok(Storage::Cuda(storage))
             }
+            Device::Wgpu(device) => {
+                let storage = array.to_cpu_storage();
+                let storage = device.storage_from_cpu_storage(&storage)?;
+                Ok(Storage::Wgpu(storage))
+            }
         }
     }
 
@@ -223,6 +251,11 @@ impl Device {
                 let storage = S::to_cpu_storage_owned(data);
                 let storage = device.storage_from_cpu_storage(&storage)?;
                 Ok(Storage::Cuda(storage))
+            }
+            Device::Wgpu(device) => {
+                let storage = S::to_cpu_storage_owned(data);
+                let storage = device.storage_from_cpu_storage(&storage)?;
+                Ok(Storage::Wgpu(storage))
             }
         }
     }

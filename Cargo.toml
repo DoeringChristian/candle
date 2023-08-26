@@ -31,6 +31,8 @@ anyhow = { version = "1", features = ["backtrace"] }
 byteorder = "1.4.3"
 clap = { version = "4.2.4", features = ["derive"] }
 cudarc = { version = "0.9.14", features = ["f16"] }
+wgpu = { version = "0.17.0" }
+futures = { version = "0.3.28" }
 # TODO: Switch back to the official gemm implementation once it has caught up.
 gemm = { version = "0.15.6", package = "candle-gemm" }
 hf-hub = "0.2.0"

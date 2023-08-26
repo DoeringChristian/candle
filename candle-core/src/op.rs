@@ -1,5 +1,5 @@
 #![allow(clippy::redundant_closure_call)]
-use crate::{CpuStorage, CudaStorage, Layout, Result, Shape, Tensor};
+use crate::{CpuStorage, CudaStorage, Layout, Result, Shape, Tensor, WgpuStorage};
 use half::{bf16, f16};
 use num_traits::float::Float;
 
@@ -149,6 +149,12 @@ pub trait CustomOp1 {
     /// offsets etc so the associated layout should be used to access it.
     fn cuda_fwd(&self, _storage: &CudaStorage, _layout: &Layout) -> Result<(CudaStorage, Shape)> {
         Err(crate::Error::Cuda(
+            format!("no cuda implementation for {}", self.name()).into(),
+        ))
+    }
+
+    fn wgpu_fwd(&self, _storage: &WgpuStorage, _layout: &Layout) -> Result<(WgpuStorage, Shape)> {
+        Err(crate::Error::Wgpu(
             format!("no cuda implementation for {}", self.name()).into(),
         ))
     }

@@ -65,6 +65,7 @@ mod strided_index;
 mod tensor;
 pub mod utils;
 mod variable;
+mod wgpu_backend;
 
 pub use cpu_backend::CpuStorage;
 pub use device::{Device, DeviceLocation};
@@ -84,6 +85,8 @@ pub use cuda_backend::{CudaDevice, CudaStorage};
 
 #[cfg(not(feature = "cuda"))]
 pub use dummy_cuda_backend::{CudaDevice, CudaStorage};
+
+pub use wgpu_backend::{WgpuDevice, WgpuStorage};
 
 #[cfg(feature = "mkl")]
 extern crate intel_mkl_src;
