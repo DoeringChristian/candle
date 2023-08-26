@@ -1,0 +1,15 @@
+[package]
+name = "candle-shaders"
+version = "0.1.3"
+edition = "2021"
+
+description = "WGPU Shaders for Candle"
+repository = "https://github.com/huggingface/candle"
+keywords = ["blas", "tensor", "machine-learning"]
+categories = ["science"]
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+inline-spirv = "0.1.6"
+
+[build-dependencies]

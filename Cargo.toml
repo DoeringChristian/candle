@@ -9,6 +9,7 @@ members = [
     "candle-wasm-examples/llama2-c",
     "candle-wasm-examples/whisper",
     "candle-wasm-examples/yolo",
+    "candle-shaders",
 ]
 exclude = [
     "candle-flash-attn",
