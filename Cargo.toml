@@ -35,6 +35,7 @@ cudarc = { version = "0.9.14", features = ["f16"] }
 wgpu = { version = "0.17.0" }
 futures = { version = "0.3.28" }
 bytemuck = { version = "1.13.1" }
+crevice = { version = "0.13.0" }
 # TODO: Switch back to the official gemm implementation once it has caught up.
 gemm = { version = "0.15.6", package = "candle-gemm" }
 hf-hub = "0.2.0"

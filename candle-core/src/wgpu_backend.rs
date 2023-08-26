@@ -14,7 +14,7 @@ pub enum WgpuError {}
 
 impl From<WgpuError> for crate::Error {
     fn from(val: WgpuError) -> Self {
-        crate::Error::Cuda(Box::new(val)).bt()
+        crate::Error::Wgpu(Box::new(val)).bt()
     }
 }
 
@@ -195,8 +195,10 @@ impl crate::backend::BackendStorage for WgpuStorage {
         todo!()
     }
 
-    fn unary_impl<B: UnaryOpT>(&self, _: &Layout) -> Result<Self> {
-        todo!()
+    fn unary_impl<B: UnaryOpT>(&self, layout: &Layout) -> Result<Self> {
+        let device = self.device.clone();
+        let res = B::V.f(&self, &device, layout)?;
+        Ok(Self(Arc::new(res)))
     }
 
     fn binary_impl<B: BinaryOpT>(&self, _: &Self, _: &Layout, _: &Layout) -> Result<Self> {
@@ -338,6 +340,20 @@ impl crate::backend::BackendDevice for WgpuDevice {
     }
 
     fn rand_normal(&self, _: &Shape, _: DType, _: f64, _: f64) -> Result<Self::Storage> {
+        todo!()
+    }
+}
+
+trait Map1 {
+    fn f(&self, src: &Buffer, dev: &WgpuDevice, layout: &Layout) -> Result<Buffer>;
+}
+
+impl<U: UnaryOpT> Map1 for U {
+    fn f(&self, src: &Buffer, dev: &WgpuDevice, layout: &Layout) -> Result<Buffer> {
+        let shape = layout.shape();
+        let dims = shape.dims();
+        let stride = layout.stride();
+        let el_count = shape.elem_count();
         todo!()
     }
 }

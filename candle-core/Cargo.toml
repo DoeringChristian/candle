@@ -18,6 +18,7 @@ wgpu = { workspace = true }
 candle-shaders = { path = "../candle-shaders", version = "0.1.3" }
 futures = { workspace = true }
 bytemuck = { workspace = true }
+crevice = { workspace = true }
 gemm = { workspace = true }
 half = { workspace = true }
 intel-mkl-src = { workspace = true, optional = true }
